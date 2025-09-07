@@ -17,7 +17,7 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
-fetch("../frontend/JS/portfolio.json")
+fetch("JS/portfolio.json")
   .then(response => response.json())
   .then(videos => {
     const container = document.getElementById("portfolio-container");
