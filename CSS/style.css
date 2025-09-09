@@ -13,6 +13,7 @@ body {
     scroll-behavior: smooth;
 }
 
+/* HEADER */
 .header {
     position: fixed;
     top: 0;
@@ -36,13 +37,18 @@ body {
     animation: slideRight 1s ease forwards;
 }
 
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
 .navbar a {
     display: inline-block;
     font-size: 18px;
     color: #fff;
     text-decoration: none;
     font-weight: 500;
-    margin-left: 35px;
     transition: .3s;
     opacity: 0;
     animation: slideTop .5s ease forwards;
@@ -53,14 +59,17 @@ body {
     color: #e36c3c;
 }
 
+/* HOME */
 .home {
     position: relative;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 70px 10% 0;
+    padding: 100px 10% 0;
+    gap: 30px;
+    flex-wrap: wrap;
 }
 
 .home-content {
@@ -102,11 +111,16 @@ body {
 }
 
 .home-img img {
-    max-width: 800px;
-    margin-left: 200px;
+    max-width: 600px;
+    width: 100%;
     opacity: 0;
     animation: zoomIn 0.7s ease forwards, floatImage 4s ease-in-out infinite;
     animation-delay: .2s, 3s;
+}
+
+/* SOCIAL */
+.social-media {
+    margin-top: 15px;
 }
 
 .social-media a {
@@ -136,7 +150,6 @@ body {
 }
 
 /* PORTFÓLIO */
-
 #portfolio {
   min-height: 100vh;
   padding: 100px 10%;
@@ -152,7 +165,7 @@ body {
 
 .portfolio-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* Sempre 3 por linha no desktop */
   gap: 20px;
 }
 
@@ -171,47 +184,35 @@ body {
 .portfolio-item iframe,
 .portfolio-item video {
   width: 100%;
-  height: 30vh;
+  height: 250px;
   border-radius: 10px;
+  object-fit: cover;
 }
 
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-  gap: 20px;
-}
 
-.video-grid video {
-  width: 100%;
-  height: 400px; 
-  object-fit: cover; 
-  border-radius: 12px;
-}
-
-/* CONTATO PARA ORÇAMENTO */
-
-/* #contato {
+/* CONTATO */
+#contato {
   display: flex;
-  justify-content: center; 
-  align-items: center;     
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   font-size: 22px;
   background-color: #222;
   text-align: center;
-  padding: 40px 20px;     
+  padding: 40px 20px;
   gap: 20px;
   box-sizing: border-box;
-  min-height: auto;      
+  min-height: auto;
 }
 
 #contato h2 {
-  margin: 0;             
+  margin: 0;
 }
 
 #contact_form {
   display: flex;
   flex-direction: column;
-  max-width: 600px;      
+  max-width: 600px;
   width: 100%;
   background: #1f1f1f;
   padding: 30px;
@@ -245,8 +246,9 @@ body {
 
 #contact_form button:hover {
   background: #ff7a4d;
-} */
+}
 
+/* RODAPÉ */
 .rodape {
     text-align: center;
     padding: 20px 10%;
@@ -255,80 +257,57 @@ body {
     color: #8b8b8b;
 }
 
-
-
-/* KEYFRAMES ANIMATIONS */
-
+/* ANIMAÇÕES */
 @keyframes slideRight {
-    0% {
-        opacity: 0;
-        transform: translateX(-100px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    0% {opacity: 0; transform: translateX(-100px);}
+    100% {opacity: 1; transform: translateX(0);}
 }
 
 @keyframes slideLeft {
-    0% {
-        opacity: 0;
-        transform: translate(100px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    0% {opacity: 0; transform: translateX(100px);}
+    100% {opacity: 1; transform: translateX(0);}
 }
 
 @keyframes slideTop {
-    0% {
-        opacity: 0;
-        transform: translateY(100px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    0% {opacity: 0; transform: translateY(100px);}
+    100% {opacity: 1; transform: translateY(0);}
 }
 
 @keyframes slideBottom {
-    0% {
-        opacity: 0;
-        transform: translateY(-100px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    0% {opacity: 0; transform: translateY(-100px);}
+    100% {opacity: 1; transform: translateY(0);}
 }
 
 @keyframes zoomIn {
-    0% {
-        opacity: 0;
-        transform: scale(0);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+    0% {opacity: 0; transform: scale(0);}
+    100% {opacity: 1; transform: scale(1);}
 }
 
 @keyframes floatImage {
-    0% {
-        transform: translateY(0px);
-    }
+    0% {transform: translateY(0);}
+    50% {transform: translateY(-24px);}
+    100% {transform: translateY(0);}
+}
 
-    50% {
-        transform: translateY(-24px);
-    }
+/* ============================= */
+/*          MEDIA QUERIES        */
+/* ============================= */
 
-    100% {
-        transform: translateY(0px);
-    }
+/* Tablets */
+@media (max-width: 1024px) {
+  .portfolio-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 vídeos por linha */
+  }
+}
+
+/* Celulares */
+@media (max-width: 768px) {
+  .portfolio-container {
+    grid-template-columns: 1fr; /* 1 vídeo por linha */
+  }
+
+  .portfolio-item iframe,
+  .portfolio-item video {
+    height: 220px; /* ajusta a altura para celular */
+  }
 }
