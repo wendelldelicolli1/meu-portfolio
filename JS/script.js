@@ -6,7 +6,6 @@ var typed = new Typed('.multiple-text', {
   loop: true
 });
 
-// Rolagem suave (caso o navegador não suporte scroll-behavior do CSS)
 document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener("click", function (e) {
     e.preventDefault();
