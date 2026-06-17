@@ -22,5 +22,7 @@
   {
     "type": "youtube",
     "src": "https://www-ccv.adobe.io/v1/player/ccv/6hUN62KY9kP/embed?api_key=behance1&bgcolor=%23191919#:~:text=source%20src%3D%22-,https%3A//cdn%2Dprod%2Dccv.adobe.com/6hUN62KY9kP/rend/6hUN62KY9kP_576.mp4%3Fhdnts,2F*%2521%252F6hUN62KY9kP%252Fimage%252F*%2521%252F6hUN62KY9kP%252Fcaptions%252F*%257Ehmac%253D75fcc92316092cf7643a9833e7013f75cb5d505374443727bd85eecedd9558ec,-%22%20type%3D%22"
-  }
+  },
+    "type": "youtube",
+    "src": "https://youtube.com/shorts/N5eZPx6b4PE"
 ]
