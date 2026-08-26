@@ -12,14 +12,30 @@ function activatePanel(button) {
     panel.hidden = panel.id !== button.dataset.panel;
   });
 
-  const panel = document.getElementById(button.dataset.panel);
-  panel?.querySelectorAll("iframe[data-src]").forEach((frame) => {
-    frame.src = frame.dataset.src;
-    frame.removeAttribute("data-src");
-  });
 }
 
 tabs.forEach((tab) => tab.addEventListener("click", () => activatePanel(tab)));
+
+document.querySelectorAll(".video-play").forEach((button) => {
+  button.addEventListener("click", async () => {
+    const video = button.parentElement?.querySelector("video");
+    if (!video) return;
+
+    document.querySelectorAll(".project-media video").forEach((other) => {
+      if (other !== video) other.pause();
+    });
+
+    if (!video.src) video.src = video.dataset.src;
+    video.controls = true;
+    button.hidden = true;
+
+    try {
+      await video.play();
+    } catch {
+      button.hidden = false;
+    }
+  });
+});
 
 const hero = document.querySelector(".hero");
 const visual = document.querySelector(".hero-visual");
