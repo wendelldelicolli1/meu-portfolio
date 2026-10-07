@@ -133,6 +133,7 @@ async function enter(session) {
     return;
   }
   show("app");
+  $("#side-user").textContent = session.user.email || "";
   await Promise.all([loadSettings(), loadProjects(), loadRequests(), loadQuotes()]);
 }
 
@@ -211,9 +212,30 @@ $("#logout").addEventListener("click", async () => {
 });
 
 /* ---------- abas ---------- */
+function setMenu(open) {
+  $("#sidebar").classList.toggle("open", open);
+  $("#side-scrim").hidden = !open;
+  $("#menu-open").setAttribute("aria-expanded", String(open));
+}
+
+$("#menu-open").addEventListener("click", () => setMenu(true));
+$("#menu-close").addEventListener("click", () => setMenu(false));
+$("#side-scrim").addEventListener("click", () => setMenu(false));
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && $("#sidebar").classList.contains("open")) setMenu(false);
+});
+
 function switchView(view) {
-  $$(".tabs [data-view]").forEach((tab) => tab.classList.toggle("active", tab.dataset.view === view));
+  $$(".tabs [data-view]").forEach((tab) => {
+    const active = tab.dataset.view === view;
+    tab.classList.toggle("active", active);
+    if (active) tab.setAttribute("aria-current", "page");
+    else tab.removeAttribute("aria-current");
+    if (active) $("#mobile-title").textContent = $("span", tab).textContent;
+  });
   $$(".view").forEach((section) => { section.hidden = section.id !== `view-${view}`; });
+  setMenu(false);
+  window.scrollTo(0, 0);
   try { localStorage.setItem("wld-admin-view", view); } catch {}
 }
 
