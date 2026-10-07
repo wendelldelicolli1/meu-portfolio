@@ -142,7 +142,14 @@ async function boot() {
     show("setup");
     return;
   }
-  sb = window.supabase.createClient(cfg.url, cfg.anonKey);
+  // A sessão fica só na memória desta aba: sair, recarregar ou fechar a página
+  // exige o login de novo. Também limpa sessões antigas salvas no navegador.
+  try {
+    Object.keys(localStorage).filter((key) => /^sb-.*-auth-token/.test(key)).forEach((key) => localStorage.removeItem(key));
+  } catch {}
+  sb = window.supabase.createClient(cfg.url, cfg.anonKey, {
+    auth: { persistSession: false, autoRefreshToken: true, detectSessionInUrl: true },
+  });
   const recovering = /type=recovery/.test(location.hash);
 
   sb.auth.onAuthStateChange((event) => {
@@ -1047,6 +1054,11 @@ settingsForm.addEventListener("submit", async (event) => {
   state.settings = data;
   renderCatalog(data.catalog);
   toast("Ajustes salvos.");
+});
+
+// Voltar para o painel pelo botão "voltar" do navegador não reaproveita a página antiga.
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) location.reload();
 });
 
 boot();

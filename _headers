@@ -4,6 +4,6 @@
 
 /admin*
   X-Robots-Tag: noindex, nofollow
-  Cache-Control: no-cache
+  Cache-Control: no-store
 /assets/admin*
   Cache-Control: no-cache
