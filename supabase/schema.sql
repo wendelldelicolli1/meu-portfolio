@@ -238,3 +238,16 @@ select * from (values
    'https://i.ytimg.com/vi/I6NNVZsLsoI/hqdefault.jpg', 7)
 ) as v(title, category, year, description, video_url, poster_url, position)
 where not exists (select 1 from public.projects);
+
+-- =====================================================================
+-- PERMISSÕES DA API (projetos novos do Supabase não liberam tabelas
+-- automaticamente; as regras RLS acima continuam valendo por cima disto)
+-- =====================================================================
+grant usage on schema public to anon, authenticated;
+grant select on public.projects to anon;
+grant insert on public.quote_requests to anon;
+grant select on public.admins to authenticated;
+grant select, insert, update, delete on public.projects, public.quote_requests,
+  public.quotes, public.settings to authenticated;
+grant usage, select on sequence public.quote_number_seq to authenticated;
+grant execute on function public.is_admin() to anon, authenticated;
