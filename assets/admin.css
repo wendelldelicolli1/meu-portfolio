@@ -125,6 +125,8 @@ code{background:#0000000f;padding:1px 5px;border-radius:4px}
 .catalog{border-top:1px solid var(--ink);padding-top:16px;display:flex;flex-direction:column;gap:12px}
 .catalog-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
 .cat-row{display:grid;grid-template-columns:minmax(0,1fr) 150px 38px;gap:8px}
+.sub-label{margin:14px 0 0;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-top:1px solid var(--line);padding-top:16px}
+.sub-label small{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:12px}
 .form-actions{display:flex;justify-content:flex-end;border-top:1px solid var(--line);padding-top:18px}
 
 /* Gaveta (dialog) */

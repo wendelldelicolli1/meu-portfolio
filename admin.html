@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Painel — WLD FILMS</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/admin.css?v=5">
+<link rel="stylesheet" href="/assets/admin.css?v=6">
 </head>
 <body>
 
@@ -156,14 +156,25 @@
         </div>
 
         <div class="catalog">
-          <div class="catalog-head"><p class="eyebrow">Aviso no WhatsApp</p><p class="muted">Recebe uma mensagem a cada novo pedido de orçamento do site.</p></div>
-          <label class="check"><input type="checkbox" name="notify_enabled"> <span>Avisar no meu WhatsApp quando chegar um pedido</span></label>
+          <div class="catalog-head"><p class="eyebrow">Avisos de novo pedido</p><p class="muted">Quando alguém pedir orçamento pelo site.</p></div>
+
+          <p class="sub-label">WhatsApp <small>(aviso curto: só nome e serviço)</small></p>
+          <label class="check"><input type="checkbox" name="notify_enabled"> <span>Avisar no meu WhatsApp</span></label>
           <div class="grid2">
             <label class="field"><span>Meu WhatsApp</span><input name="notify_phone" inputmode="tel" placeholder="(48) 99671-7002"></label>
-            <label class="field"><span>Chave do CallMeBot <small>(apikey)</small></span><input name="notify_apikey" type="password" autocomplete="off" placeholder="Número que o CallMeBot te enviou"></label>
+            <label class="field"><span>Chave do CallMeBot</span><input name="notify_apikey" type="password" autocomplete="off" placeholder="Número que o CallMeBot te enviou"></label>
           </div>
           <p class="muted">Para obter a chave: salve o número <b>+34 623 75 84 18</b> nos contatos e mande para ele, pelo WhatsApp, a mensagem <b>I allow callmebot to send me messages</b>. A chave chega em até 2 minutos.</p>
-          <button class="btn btn-line" type="button" id="notify-test">Salvar e enviar mensagem de teste</button>
+          <button class="btn btn-line" type="button" data-notify-test="whatsapp">Salvar e testar WhatsApp</button>
+
+          <p class="sub-label">E-mail <small>(aviso completo, com todos os dados do pedido)</small></p>
+          <label class="check"><input type="checkbox" name="notify_email_enabled"> <span>Avisar no meu e-mail</span></label>
+          <div class="grid2">
+            <label class="field"><span>Meu e-mail <small>(o mesmo da conta no Resend)</small></span><input name="notify_email" type="email" placeholder="wldfilmms@gmail.com"></label>
+            <label class="field"><span>Chave do Resend <small>(começa com re_)</small></span><input name="notify_resend_key" type="password" autocomplete="off" placeholder="re_..."></label>
+          </div>
+          <p class="muted">Para obter a chave: crie uma conta grátis em <b>resend.com</b> com este mesmo e-mail, vá em <b>API Keys → Create API Key</b> (permissão "Sending access") e copie a chave.</p>
+          <button class="btn btn-line" type="button" data-notify-test="email">Salvar e testar e-mail</button>
         </div>
 
         <div class="form-actions"><button class="btn btn-acid" type="submit">Salvar ajustes</button></div>
@@ -294,6 +305,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/config.js?v=2"></script>
-<script src="/assets/admin.js?v=6"></script>
+<script src="/assets/admin.js?v=7"></script>
 </body>
 </html>

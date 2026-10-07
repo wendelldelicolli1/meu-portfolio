@@ -1077,7 +1077,7 @@ function loadPdfLibraries() {
    AJUSTES
    ========================================================= */
 const settingsForm = $("#settings-form");
-const SETTINGS_FIELDS = ["business_name", "owner_name", "document", "city", "email", "phone", "instagram", "pix", "payment_terms", "delivery_terms", "notes", "notify_phone", "notify_apikey"];
+const SETTINGS_FIELDS = ["business_name", "owner_name", "document", "city", "email", "phone", "instagram", "pix", "payment_terms", "delivery_terms", "notes", "notify_phone", "notify_apikey", "notify_email", "notify_resend_key"];
 
 async function loadSettings() {
   const { data, error } = await sb.from("settings").select("data").eq("id", 1).maybeSingle();
@@ -1085,6 +1085,8 @@ async function loadSettings() {
   state.settings = data?.data || {};
   SETTINGS_FIELDS.forEach((key) => { settingsForm[key].value = state.settings[key] || ""; });
   settingsForm.notify_enabled.checked = Boolean(state.settings.notify_enabled);
+  settingsForm.notify_email_enabled.checked = Boolean(state.settings.notify_email_enabled);
+  if (!settingsForm.notify_email.value) settingsForm.notify_email.value = state.settings.email || "";
   renderCatalog(state.settings.catalog || []);
 }
 
@@ -1117,6 +1119,7 @@ async function saveSettings() {
   const data = { ...state.settings, catalog: readCatalog() };
   SETTINGS_FIELDS.forEach((key) => { data[key] = settingsForm[key].value.trim(); });
   data.notify_enabled = settingsForm.notify_enabled.checked;
+  data.notify_email_enabled = settingsForm.notify_email_enabled.checked;
   const { error } = await sb.from("settings").upsert({ id: 1, data, updated_at: new Date().toISOString() });
   if (error) {
     fail(error, "Não consegui salvar os ajustes.");
@@ -1136,23 +1139,26 @@ settingsForm.addEventListener("submit", async (event) => {
   if (saved) toast("Ajustes salvos.");
 });
 
-$("#notify-test").addEventListener("click", async (event) => {
-  const button = event.currentTarget;
-  if (!settingsForm.notify_phone.value.trim() || !settingsForm.notify_apikey.value.trim()) {
-    toast("Preencha o seu WhatsApp e a chave do CallMeBot.", true);
+$$("[data-notify-test]").forEach((button) => button.addEventListener("click", async () => {
+  const channel = button.dataset.notifyTest;
+  const [toggle, target, key, label] = channel === "email"
+    ? ["notify_email_enabled", "notify_email", "notify_resend_key", "o seu e-mail e a chave do Resend"]
+    : ["notify_enabled", "notify_phone", "notify_apikey", "o seu WhatsApp e a chave do CallMeBot"];
+  if (!settingsForm[target].value.trim() || !settingsForm[key].value.trim()) {
+    toast(`Preencha ${label}.`, true);
     return;
   }
-  settingsForm.notify_enabled.checked = true;
+  settingsForm[toggle].checked = true;
   button.disabled = true;
   const saved = await saveSettings();
   if (saved) {
-    const { data, error } = await sb.rpc("notify_test");
+    const { data, error } = await sb.rpc("notify_test", { channel });
     if (error) fail(error, "Não consegui enviar o teste.");
-    else if (data === "enviado") toast("Teste enviado! Deve chegar no seu WhatsApp em alguns segundos.");
+    else if (data === "enviado") toast(channel === "email" ? "Teste enviado! Confira o e-mail (e a caixa de spam)." : "Teste enviado! Deve chegar no WhatsApp em alguns segundos.");
     else toast("O aviso está desligado ou incompleto.", true);
   }
   button.disabled = false;
-});
+}));
 
 // Voltar para o painel pelo botão "voltar" do navegador não reaproveita a página antiga.
 window.addEventListener("pageshow", (event) => {
