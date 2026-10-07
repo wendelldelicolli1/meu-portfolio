@@ -155,6 +155,17 @@
           <button class="btn btn-line" type="button" id="add-catalog">+ Adicionar serviço</button>
         </div>
 
+        <div class="catalog">
+          <div class="catalog-head"><p class="eyebrow">Aviso no WhatsApp</p><p class="muted">Recebe uma mensagem a cada novo pedido de orçamento do site.</p></div>
+          <label class="check"><input type="checkbox" name="notify_enabled"> <span>Avisar no meu WhatsApp quando chegar um pedido</span></label>
+          <div class="grid2">
+            <label class="field"><span>Meu WhatsApp</span><input name="notify_phone" inputmode="tel" placeholder="(48) 99671-7002"></label>
+            <label class="field"><span>Chave do CallMeBot <small>(apikey)</small></span><input name="notify_apikey" type="password" autocomplete="off" placeholder="Número que o CallMeBot te enviou"></label>
+          </div>
+          <p class="muted">Para obter a chave: salve o número <b>+34 623 75 84 18</b> nos contatos e mande para ele, pelo WhatsApp, a mensagem <b>I allow callmebot to send me messages</b>. A chave chega em até 2 minutos.</p>
+          <button class="btn btn-line" type="button" id="notify-test">Salvar e enviar mensagem de teste</button>
+        </div>
+
         <div class="form-actions"><button class="btn btn-acid" type="submit">Salvar ajustes</button></div>
       </form>
     </section>
@@ -283,6 +294,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/config.js?v=2"></script>
-<script src="/assets/admin.js?v=5"></script>
+<script src="/assets/admin.js?v=6"></script>
 </body>
 </html>

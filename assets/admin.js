@@ -1077,13 +1077,14 @@ function loadPdfLibraries() {
    AJUSTES
    ========================================================= */
 const settingsForm = $("#settings-form");
-const SETTINGS_FIELDS = ["business_name", "owner_name", "document", "city", "email", "phone", "instagram", "pix", "payment_terms", "delivery_terms", "notes"];
+const SETTINGS_FIELDS = ["business_name", "owner_name", "document", "city", "email", "phone", "instagram", "pix", "payment_terms", "delivery_terms", "notes", "notify_phone", "notify_apikey"];
 
 async function loadSettings() {
   const { data, error } = await sb.from("settings").select("data").eq("id", 1).maybeSingle();
   if (error) return fail(error, "Erro ao carregar ajustes.");
   state.settings = data?.data || {};
   SETTINGS_FIELDS.forEach((key) => { settingsForm[key].value = state.settings[key] || ""; });
+  settingsForm.notify_enabled.checked = Boolean(state.settings.notify_enabled);
   renderCatalog(state.settings.catalog || []);
 }
 
@@ -1112,18 +1113,45 @@ $("#catalog-rows").addEventListener("click", (event) => {
   if (button) button.closest(".cat-row").remove();
 });
 
-settingsForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
+async function saveSettings() {
   const data = { ...state.settings, catalog: readCatalog() };
   SETTINGS_FIELDS.forEach((key) => { data[key] = settingsForm[key].value.trim(); });
-  const button = settingsForm.querySelector("button[type=submit]");
-  button.disabled = true;
+  data.notify_enabled = settingsForm.notify_enabled.checked;
   const { error } = await sb.from("settings").upsert({ id: 1, data, updated_at: new Date().toISOString() });
-  button.disabled = false;
-  if (error) return fail(error, "Não consegui salvar os ajustes.");
+  if (error) {
+    fail(error, "Não consegui salvar os ajustes.");
+    return false;
+  }
   state.settings = data;
   renderCatalog(data.catalog);
-  toast("Ajustes salvos.");
+  return true;
+}
+
+settingsForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const button = settingsForm.querySelector("button[type=submit]");
+  button.disabled = true;
+  const saved = await saveSettings();
+  button.disabled = false;
+  if (saved) toast("Ajustes salvos.");
+});
+
+$("#notify-test").addEventListener("click", async (event) => {
+  const button = event.currentTarget;
+  if (!settingsForm.notify_phone.value.trim() || !settingsForm.notify_apikey.value.trim()) {
+    toast("Preencha o seu WhatsApp e a chave do CallMeBot.", true);
+    return;
+  }
+  settingsForm.notify_enabled.checked = true;
+  button.disabled = true;
+  const saved = await saveSettings();
+  if (saved) {
+    const { data, error } = await sb.rpc("notify_test");
+    if (error) fail(error, "Não consegui enviar o teste.");
+    else if (data === "enviado") toast("Teste enviado! Deve chegar no seu WhatsApp em alguns segundos.");
+    else toast("O aviso está desligado ou incompleto.", true);
+  }
+  button.disabled = false;
 });
 
 // Voltar para o painel pelo botão "voltar" do navegador não reaproveita a página antiga.

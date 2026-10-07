@@ -35,3 +35,8 @@ on conflict do nothing;
 e colar em `assets/config.js`.
 
 Pronto: painel em **https://wldfilms.com.br/admin**.
+
+## 7. (Opcional) Aviso no WhatsApp a cada pedido
+Rodar `supabase/whatsapp.sql` no SQL Editor. Depois, no painel → **Ajustes → Aviso no WhatsApp**:
+preencher seu número e a chave do CallMeBot (instruções na própria tela) e clicar em
+"Salvar e enviar mensagem de teste".
