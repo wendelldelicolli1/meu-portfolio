@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solicitar orçamento — WLD FILMS</title>
+<meta name="description" content="Conte sobre o seu projeto de vídeo ou fotografia e receba um orçamento personalizado da WLD Films.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/_next/static/css/index.PortraitPreview.css">
+<link rel="stylesheet" href="/assets/site.css?v=1">
+</head>
+<body class="quote-page">
+<main>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="WLD Films, início">WLD <span>FILMS</span></a>
+    <nav aria-label="Navegação principal"><a href="/#projetos">Projetos</a><a href="/#sobre">Sobre</a><a href="/#contato">Contato</a></nav>
+    <span class="location">BR · DISPONÍVEL GLOBALMENTE</span>
+  </header>
+
+  <section class="quote-hero">
+    <p class="eyebrow">Orçamento · Resposta em até 24h úteis</p>
+    <h1>CONTE A SUA<br><em>HISTÓRIA.</em></h1>
+    <p class="lead">Quanto mais detalhes você trouxer, mais preciso fica o orçamento. Leva uns 3 minutos e os campos com * são os únicos obrigatórios.</p>
+  </section>
+
+  <form class="quote-form" id="quote-form" novalidate>
+    <fieldset>
+      <legend>01 <b>Sobre você</b></legend>
+      <div class="fields">
+        <label class="field"><span>Nome *</span><input name="name" required maxlength="120" autocomplete="name"></label>
+        <label class="field"><span>WhatsApp *</span><input name="phone" required maxlength="40" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000"></label>
+        <label class="field"><span>E-mail</span><input name="email" type="email" maxlength="160" autocomplete="email"></label>
+        <label class="field"><span>Empresa / Instagram <small>(se houver)</small></span><input name="company" maxlength="160" autocomplete="organization"></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>02 <b>O projeto</b></legend>
+      <div class="fields">
+        <label class="field"><span>Tipo de serviço *</span>
+          <select name="service" required>
+            <option value="">Selecione</option>
+            <option>Filme de marca / institucional</option>
+            <option>Conteúdo para redes sociais</option>
+            <option>Casamento / evento social</option>
+            <option>Evento corporativo</option>
+            <option>Ensaio fotográfico</option>
+            <option>Fotografia de produto</option>
+            <option>Pós-produção / edição</option>
+            <option>Outro</option>
+          </select>
+        </label>
+        <label class="field"><span>Do que se trata? <small>(em poucas palavras)</small></span><input name="project_type" maxlength="120" placeholder="Ex.: lançamento de coleção, aniversário de 15 anos"></label>
+        <label class="field full"><span>Conte mais sobre a ideia</span><textarea name="message" maxlength="4000" placeholder="Objetivo do material, público, onde vai ser publicado, o que não pode faltar..."></textarea></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>03 <b>Captação</b></legend>
+      <div class="fields">
+        <label class="field"><span>Data prevista</span><input name="event_date" type="date"></label>
+        <label class="field"><span>Cidade / local</span><input name="location" maxlength="200" placeholder="Ex.: Florianópolis — SC"></label>
+        <label class="field full"><span>Tempo de cobertura</span>
+          <select name="duration">
+            <option value="">Selecione</option>
+            <option>Até 2 horas</option>
+            <option>Meio período (até 4h)</option>
+            <option>Diária (até 8h)</option>
+            <option>Mais de um dia</option>
+            <option>Sem captação — só edição</option>
+            <option>Não sei ainda</option>
+          </select>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>04 <b>Entregas</b></legend>
+      <div class="fields">
+        <div class="field full"><span>O que você precisa receber?</span>
+          <div class="chips">
+            <label><input type="checkbox" name="deliverables" value="Vídeo horizontal"><span>Vídeo horizontal</span></label>
+            <label><input type="checkbox" name="deliverables" value="Vídeos verticais (Reels/TikTok)"><span>Vídeos verticais (Reels/TikTok)</span></label>
+            <label><input type="checkbox" name="deliverables" value="Teaser / trailer"><span>Teaser / trailer</span></label>
+            <label><input type="checkbox" name="deliverables" value="Fotos tratadas"><span>Fotos tratadas</span></label>
+            <label><input type="checkbox" name="deliverables" value="Imagens de drone"><span>Imagens de drone</span></label>
+            <label><input type="checkbox" name="deliverables" value="Making of / bastidores"><span>Making of / bastidores</span></label>
+            <label><input type="checkbox" name="deliverables" value="Material bruto"><span>Material bruto</span></label>
+          </div>
+        </div>
+        <label class="field full"><span>Quantidades e duração <small>(se já souber)</small></span><input name="deliverables_detail" maxlength="1000" placeholder="Ex.: 1 vídeo de 2 min + 4 reels de 30s + 50 fotos"></label>
+        <label class="field"><span>Prazo de entrega</span>
+          <select name="deadline">
+            <option value="">Selecione</option>
+            <option>Sem pressa</option>
+            <option>Até 30 dias</option>
+            <option>Até 15 dias</option>
+            <option>Urgente (até 7 dias)</option>
+          </select>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>05 <b>Investimento</b></legend>
+      <div class="fields">
+        <label class="field"><span>Faixa de investimento</span>
+          <select name="budget_range">
+            <option value="">Selecione</option>
+            <option>Até R$ 1.000</option>
+            <option>R$ 1.000 a R$ 3.000</option>
+            <option>R$ 3.000 a R$ 6.000</option>
+            <option>R$ 6.000 a R$ 10.000</option>
+            <option>Acima de R$ 10.000</option>
+            <option>Prefiro conversar</option>
+          </select>
+        </label>
+        <label class="field"><span>Como conheceu a WLD?</span>
+          <select name="source">
+            <option value="">Selecione</option>
+            <option>Instagram</option>
+            <option>Indicação</option>
+            <option>Google</option>
+            <option>Já sou cliente</option>
+            <option>Outro</option>
+          </select>
+        </label>
+        <label class="field full"><span>Referências <small>(links de vídeos ou fotos que você gosta)</small></span><textarea name="references_links" maxlength="1500" placeholder="Cole um link por linha"></textarea></label>
+      </div>
+    </fieldset>
+
+    <label class="hp" aria-hidden="true">Não preencha<input name="website" tabindex="-1" autocomplete="off"></label>
+
+    <div class="quote-submit">
+      <p>Seus dados são usados apenas para preparar o orçamento e entrar em contato com você.</p>
+      <button type="submit">Enviar pedido <span>→</span></button>
+      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <section class="quote-done" id="quote-done" hidden>
+    <p class="eyebrow">Pedido recebido</p>
+    <h2>OBRIGADO,<br><em id="done-name">até já.</em></h2>
+    <p>Recebi as informações do seu projeto e retorno com o orçamento em até 24 horas úteis. Se quiser adiantar a conversa, me chama no WhatsApp.</p>
+    <a id="done-whatsapp" href="https://wa.me/5548996717002" target="_blank" rel="noreferrer">Falar no WhatsApp <span>↗</span></a>
+  </section>
+
+  <footer id="contato">
+    <p class="eyebrow">PREFERE FALAR DIRETO?</p>
+    <a class="contact-link" href="mailto:wldfilmms@gmail.com">wldfilmms@gmail.com <span>↗</span></a>
+    <a class="contact-link phone-link" href="https://wa.me/5548996717002" target="_blank" rel="noreferrer">(48) 99671-7002 <span>↗</span></a>
+    <div class="footer-row"><p>© 2026 WLD FILMS</p><div><a href="https://instagram.com/wldfilms_" target="_blank" rel="noreferrer">Instagram</a></div><a href="/">VOLTAR AO SITE ↑</a></div>
+  </footer>
+</main>
+<script src="/assets/config.js?v=1" defer></script>
+<script src="/assets/orcamento.js?v=1" defer></script>
+</body>
+</html>

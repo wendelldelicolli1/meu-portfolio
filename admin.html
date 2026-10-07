@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel — WLD FILMS</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/admin.css?v=2">
+</head>
+<body>
+
+<!-- LOGIN -->
+<section class="auth" id="auth" hidden>
+  <div class="auth-box">
+    <p class="brand">WLD <span>FILMS</span></p>
+    <h1>Painel<br><em>privado.</em></h1>
+
+    <form id="login-form" class="stack">
+      <label class="field"><span>E-mail</span><input name="email" type="email" required autocomplete="username"></label>
+      <label class="field"><span>Senha</span><input name="password" type="password" required autocomplete="current-password"></label>
+      <button class="btn btn-acid" type="submit">Entrar</button>
+      <button class="link" type="button" id="forgot">Esqueci minha senha</button>
+    </form>
+
+    <form id="reset-form" class="stack" hidden>
+      <p class="muted">Crie uma nova senha para o painel.</p>
+      <label class="field"><span>Nova senha</span><input name="password" type="password" minlength="8" required autocomplete="new-password"></label>
+      <button class="btn btn-acid" type="submit">Salvar nova senha</button>
+    </form>
+
+    <p class="auth-msg" id="auth-msg" role="status" aria-live="polite"></p>
+  </div>
+</section>
+
+<!-- CONFIG FALTANDO -->
+<section class="auth" id="setup" hidden>
+  <div class="auth-box">
+    <p class="brand">WLD <span>FILMS</span></p>
+    <h1>Quase<br><em>pronto.</em></h1>
+    <p class="muted">O painel ainda não está conectado ao banco de dados. Preencha a URL e a chave do Supabase em <code>assets/config.js</code>.</p>
+  </div>
+</section>
+
+<!-- APP -->
+<div class="app" id="app" hidden>
+  <header class="bar">
+    <a class="brand" href="/" target="_blank" rel="noreferrer" title="Abrir o site">WLD <span>FILMS</span></a>
+    <nav class="tabs" role="tablist">
+      <button type="button" data-view="projects" class="active">Projetos</button>
+      <button type="button" data-view="requests">Pedidos <b class="badge" id="badge-requests" hidden></b></button>
+      <button type="button" data-view="quotes">Orçamentos</button>
+      <button type="button" data-view="settings">Ajustes</button>
+    </nav>
+    <button type="button" class="link light" id="logout">Sair</button>
+  </header>
+
+  <main class="content">
+    <!-- PROJETOS -->
+    <section class="view" id="view-projects">
+      <div class="view-head">
+        <div><p class="eyebrow">Portfólio</p><h2>Projetos</h2></div>
+        <button class="btn btn-ink" type="button" id="new-project">+ Novo projeto</button>
+      </div>
+      <div class="filters" id="project-filters">
+        <button type="button" data-filter="all" class="active">Todos</button>
+        <button type="button" data-filter="horizontal">Horizontais</button>
+        <button type="button" data-filter="vertical">Verticais</button>
+        <button type="button" data-filter="foto">Fotos</button>
+        <button type="button" data-filter="off">Fora do ar</button>
+      </div>
+      <div class="list" id="project-list"></div>
+    </section>
+
+    <!-- PEDIDOS -->
+    <section class="view" id="view-requests" hidden>
+      <div class="view-head">
+        <div><p class="eyebrow">Vindos do site</p><h2>Pedidos de orçamento</h2></div>
+        <a class="btn btn-line" href="/orcamento" target="_blank" rel="noreferrer">Ver formulário ↗</a>
+      </div>
+      <div class="filters" id="request-filters">
+        <button type="button" data-filter="open" class="active">Em aberto</button>
+        <button type="button" data-filter="orcado">Orçados</button>
+        <button type="button" data-filter="fechado">Fechados</button>
+        <button type="button" data-filter="arquivado">Arquivados</button>
+        <button type="button" data-filter="all">Todos</button>
+      </div>
+      <div class="list" id="request-list"></div>
+    </section>
+
+    <!-- ORÇAMENTOS -->
+    <section class="view" id="view-quotes" hidden>
+      <div class="view-head">
+        <div><p class="eyebrow">Propostas</p><h2>Orçamentos</h2></div>
+        <button class="btn btn-ink" type="button" id="new-quote">+ Novo orçamento</button>
+      </div>
+      <div class="list" id="quote-list"></div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section class="view" id="view-settings" hidden>
+      <div class="view-head">
+        <div><p class="eyebrow">Usados nos orçamentos</p><h2>Ajustes</h2></div>
+      </div>
+      <form id="settings-form" class="panel-form">
+        <div class="grid2">
+          <label class="field"><span>Nome da empresa</span><input name="business_name"></label>
+          <label class="field"><span>Responsável</span><input name="owner_name"></label>
+          <label class="field"><span>CPF / CNPJ</span><input name="document"></label>
+          <label class="field"><span>Cidade</span><input name="city" placeholder="Ex.: Florianópolis — SC"></label>
+          <label class="field"><span>E-mail</span><input name="email" type="email"></label>
+          <label class="field"><span>Telefone / WhatsApp</span><input name="phone"></label>
+          <label class="field"><span>Instagram</span><input name="instagram"></label>
+          <label class="field"><span>Chave PIX</span><input name="pix"></label>
+        </div>
+        <label class="field"><span>Condições de pagamento (padrão)</span><textarea name="payment_terms" rows="3"></textarea></label>
+        <label class="field"><span>Prazo de entrega (padrão)</span><textarea name="delivery_terms" rows="3"></textarea></label>
+        <label class="field"><span>Observações (padrão)</span><textarea name="notes" rows="3"></textarea></label>
+
+        <div class="catalog">
+          <div class="catalog-head"><p class="eyebrow">Tabela de serviços</p><p class="muted">Aparecem como atalho na hora de montar o orçamento.</p></div>
+          <div id="catalog-rows"></div>
+          <button class="btn btn-line" type="button" id="add-catalog">+ Adicionar serviço</button>
+        </div>
+
+        <div class="form-actions"><button class="btn btn-acid" type="submit">Salvar ajustes</button></div>
+      </form>
+    </section>
+  </main>
+</div>
+
+<!-- EDITOR DE PROJETO -->
+<dialog class="drawer" id="project-dialog">
+  <form id="project-form" method="dialog" class="drawer-body">
+    <div class="drawer-head">
+      <h3 id="project-dialog-title">Novo projeto</h3>
+      <button type="button" class="icon-btn" data-close aria-label="Fechar">×</button>
+    </div>
+
+    <label class="field"><span>Título *</span><input name="title" required maxlength="160"></label>
+    <div class="grid2">
+      <label class="field"><span>Categoria</span>
+        <select name="category">
+          <option value="horizontal">Vídeo horizontal</option>
+          <option value="vertical">Vídeo vertical</option>
+          <option value="foto">Fotos</option>
+        </select>
+      </label>
+      <label class="field"><span>Ano</span><input name="year" type="number" min="1990" max="2100"></label>
+    </div>
+    <label class="field"><span>Legenda <small>(aparece abaixo do título; padrão "Vídeos" ou "Fotos")</small></span><input name="client" maxlength="80" placeholder="Ex.: Casamento, Marca, Evento"></label>
+    <label class="field"><span>Descrição / créditos</span><textarea name="description" rows="2" maxlength="600" placeholder="Ex.: Captação: Wendell Delicolli · Edição: ..."></textarea></label>
+
+    <div class="only-video">
+      <label class="field"><span>Link do vídeo * <small>(ImageKit .mp4 ou YouTube)</small></span><input name="video_url" type="url" placeholder="https://ik.imagekit.io/... ou https://youtu.be/..."></label>
+    </div>
+
+    <div class="field">
+      <span>Capa <small>(se vazio e for YouTube, usa a capa do YouTube)</small></span>
+      <div class="cover-row">
+        <div class="cover-preview" id="cover-preview"></div>
+        <div class="stack">
+          <input name="poster_url" type="url" placeholder="Cole o link de uma imagem">
+          <label class="btn btn-line file-btn">Enviar imagem<input type="file" accept="image/*" id="cover-file" hidden></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="only-photo field">
+      <span>Fotos do ensaio <small>(a primeira é a capa se não houver outra)</small></span>
+      <div class="photo-grid" id="photo-grid"></div>
+      <label class="btn btn-line file-btn">+ Enviar fotos<input type="file" accept="image/*" multiple id="photo-files" hidden></label>
+    </div>
+
+    <label class="check"><input type="checkbox" name="published" checked> <span>Publicado no site</span></label>
+
+    <p class="form-msg" id="project-msg" role="status" aria-live="polite"></p>
+    <div class="drawer-foot">
+      <button type="button" class="btn btn-line" data-close>Cancelar</button>
+      <button type="submit" class="btn btn-acid">Salvar projeto</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- EDITOR DE ORÇAMENTO -->
+<dialog class="drawer wide" id="quote-dialog">
+  <form id="quote-form" method="dialog" class="drawer-body">
+    <div class="drawer-head">
+      <h3 id="quote-dialog-title">Novo orçamento</h3>
+      <button type="button" class="icon-btn" data-close aria-label="Fechar">×</button>
+    </div>
+
+    <p class="eyebrow section-label">Cliente</p>
+    <div class="grid2">
+      <label class="field"><span>Nome *</span><input name="client_name" required></label>
+      <label class="field"><span>Empresa</span><input name="client_company"></label>
+      <label class="field"><span>CPF / CNPJ</span><input name="client_doc"></label>
+      <label class="field"><span>WhatsApp</span><input name="client_phone"></label>
+      <label class="field full"><span>E-mail</span><input name="client_email" type="email"></label>
+    </div>
+
+    <p class="eyebrow section-label">Projeto</p>
+    <label class="field"><span>Título do orçamento</span><input name="title" placeholder="Ex.: Filme de casamento — Ana & Pedro"></label>
+    <div class="grid2">
+      <label class="field"><span>Data do evento / captação</span><input name="event_date" type="date"></label>
+      <label class="field"><span>Local</span><input name="location"></label>
+    </div>
+    <label class="field"><span>Escopo / descrição do trabalho</span><textarea name="scope" rows="4" placeholder="O que será feito, como será a captação, o que o cliente recebe..."></textarea></label>
+
+    <p class="eyebrow section-label">Itens</p>
+    <div class="items" id="items"></div>
+    <div class="items-actions">
+      <select id="catalog-pick"><option value="">+ Adicionar da tabela de serviços</option></select>
+      <button type="button" class="btn btn-line" id="add-item">+ Item em branco</button>
+    </div>
+    <div class="totals">
+      <label class="field"><span>Desconto (R$)</span><input name="discount" type="number" step="0.01" min="0" value="0"></label>
+      <div class="total-box"><span>Subtotal</span><b id="q-subtotal">R$ 0,00</b><span>Total</span><strong id="q-total">R$ 0,00</strong></div>
+    </div>
+
+    <p class="eyebrow section-label">Condições</p>
+    <div class="grid2">
+      <label class="field"><span>Data de emissão</span><input name="issue_date" type="date"></label>
+      <label class="field"><span>Validade (dias)</span><input name="valid_days" type="number" min="1" value="15"></label>
+    </div>
+    <label class="field"><span>Pagamento</span><textarea name="payment_terms" rows="2"></textarea></label>
+    <label class="field"><span>Prazo de entrega</span><textarea name="delivery_terms" rows="2"></textarea></label>
+    <label class="field"><span>Observações</span><textarea name="notes" rows="2"></textarea></label>
+    <label class="field"><span>Situação</span>
+      <select name="status">
+        <option value="rascunho">Rascunho</option>
+        <option value="enviado">Enviado ao cliente</option>
+        <option value="aprovado">Aprovado</option>
+        <option value="recusado">Recusado</option>
+      </select>
+    </label>
+
+    <p class="form-msg" id="quote-msg" role="status" aria-live="polite"></p>
+    <div class="drawer-foot">
+      <button type="button" class="btn btn-line" data-close>Fechar</button>
+      <button type="button" class="btn btn-line" id="quote-pdf">Gerar PDF</button>
+      <button type="submit" class="btn btn-acid">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- Área usada só na impressão / PDF -->
+<div id="print-root"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/config.js?v=1"></script>
+<script src="/assets/admin.js?v=1"></script>
+</body>
+</html>

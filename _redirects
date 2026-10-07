@@ -1,1 +1,4 @@
+/admin        /admin.html      200
+/orcamento    /orcamento.html  200
+/supabase/*   /index.html      404!
 /* /index.html 200
