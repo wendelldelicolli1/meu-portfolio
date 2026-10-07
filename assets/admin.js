@@ -718,7 +718,7 @@ $("#quote-list").addEventListener("click", async (event) => {
   const act = button.dataset.act;
 
   if (act === "edit") return openQuote(quote);
-  if (act === "pdf") return printQuote(quote);
+  if (act === "pdf") return downloadQuote(quote);
   if (act === "wa") return quoteWhatsApp(quote);
 
   if (act === "dup") {
@@ -922,11 +922,11 @@ quoteForm.addEventListener("submit", async (event) => {
 
 $("#quote-pdf").addEventListener("click", async () => {
   const saved = await saveQuote();
-  if (saved) printQuote(saved);
+  if (saved) await downloadQuote(saved);
 });
 
 /* ---------- PDF ---------- */
-function printQuote(quote) {
+async function downloadQuote(quote) {
   const s = state.settings;
   const { subtotal, discount, total } = quoteTotals(quote);
   const number = quoteNumber(quote);
@@ -997,10 +997,80 @@ function printQuote(quote) {
     </footer>
   </div>`;
 
-  const previousTitle = document.title;
-  document.title = `Orçamento ${number} - ${quote.client_name}`;
-  window.addEventListener("afterprint", () => { document.title = previousTitle; }, { once: true });
-  setTimeout(() => window.print(), 50);
+  const filename = `Orçamento ${number} - ${quote.client_name}`.replace(/[\\/:*?"<>|]+/g, "").trim();
+  const root = $("#print-root");
+  root.classList.add("exporting");
+  toast("Gerando o PDF...");
+  try {
+    await loadPdfLibraries();
+    await document.fonts?.ready;
+    const pdf = await renderPdf($(".doc", root));
+    pdf.save(`${filename}.pdf`);
+    toast("PDF baixado.");
+  } catch (error) {
+    fail(error, "Não consegui gerar o PDF.");
+  } finally {
+    root.classList.remove("exporting");
+    root.innerHTML = "";
+  }
+}
+
+// Fotografa o documento e distribui em páginas A4, quebrando sempre entre
+// blocos (nunca no meio de uma linha da tabela ou de um parágrafo).
+async function renderPdf(doc) {
+  const scale = 2;
+  const canvas = await window.html2canvas(doc, { scale, backgroundColor: "#ffffff", useCORS: true, scrollX: 0, scrollY: 0 });
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
+  const pxPerMm = canvas.width / 210;
+  const pageHeight = Math.floor(297 * pxPerMm);
+  const topGap = Math.round(12 * pxPerMm); // respiro no topo das páginas seguintes
+
+  const docTop = doc.getBoundingClientRect().top;
+  const breaks = $$(".doc-head, .doc-parties, .doc-project, .doc-table thead, .doc-table tr, .doc-sum, .doc-terms > div, .doc-sign", doc)
+    .map((el) => Math.round((el.getBoundingClientRect().bottom - docTop) * scale))
+    .sort((a, b) => a - b);
+
+  let y = 0;
+  let page = 0;
+  while (y < canvas.height - 2) {
+    const offset = page === 0 ? 0 : topGap;
+    const room = pageHeight - offset;
+    let end = canvas.height;
+    if (canvas.height - y > room + 3 * scale) { // tolera arredondamentos de 1–2px
+      const fits = breaks.filter((b) => b > y + room * 0.25 && b <= y + room);
+      end = fits.length ? fits[fits.length - 1] : y + room;
+    }
+    const slice = document.createElement("canvas");
+    slice.width = canvas.width;
+    slice.height = pageHeight;
+    const ctx = slice.getContext("2d");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, slice.width, slice.height);
+    const height = Math.min(end - y, room);
+    ctx.drawImage(canvas, 0, y, canvas.width, height, 0, offset, canvas.width, height);
+    if (page > 0) pdf.addPage();
+    pdf.addImage(slice.toDataURL("image/jpeg", 0.92), "JPEG", 0, 0, 210, 297);
+    y = end;
+    page += 1;
+  }
+  return pdf;
+}
+
+let pdfLibraries;
+function loadPdfLibraries() {
+  const load = (src) => new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error("sem conexão com o gerador de PDF"));
+    document.head.append(script);
+  });
+  pdfLibraries ||= Promise.all([
+    window.html2canvas ? null : load("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"),
+    window.jspdf ? null : load("https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"),
+  ]).catch((error) => { pdfLibraries = null; throw error; });
+  return pdfLibraries;
 }
 
 /* =========================================================
