@@ -2,12 +2,16 @@
 
 .project-embed{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;z-index:2}
 
-/* Título, ano, legenda e descrição dos projetos */
-.project-meta{grid-template-columns:minmax(0,1fr) auto;align-items:baseline}
+/* Título, ano, legenda e créditos dos projetos */
+.project-meta{grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:0 20px;padding-top:12px}
 .project-meta h2{grid-column:1;grid-row:1;line-height:1.05}
-.project-meta .project-year{grid-column:2;grid-row:1}
-.project-meta .project-tag,.project-meta p.project-tag:last-child{grid-column:1/-1;opacity:.6;line-height:1.6}
-.project-meta p:last-child.project-description,.project-meta .project-description{grid-column:1/-1;margin-top:6px;font-size:12px;letter-spacing:.01em;line-height:1.55;max-width:62ch}
+.project-meta .project-year{grid-column:2;grid-row:1;opacity:.55}
+.project-meta .project-tag,.project-meta p.project-tag:last-child{grid-column:1/-1;margin-top:8px;opacity:.5;line-height:1.6}
+.project-meta p:last-child.project-description,.project-meta .project-description{grid-column:1/-1;margin-top:14px;font-size:12px;letter-spacing:.01em;line-height:1.6;max-width:62ch;opacity:.75}
+.project-credits{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px 34px;margin:18px 0 0;padding:0}
+.project-credits div{display:flex;flex-direction:column;gap:3px}
+.project-credits dt{font-size:8px;letter-spacing:.18em;text-transform:uppercase;opacity:.45}
+.project-credits dd{margin:0;font-size:12px;letter-spacing:.02em}
 
 /* Projetos de foto */
 .photo-list .project{grid-column:span 4}

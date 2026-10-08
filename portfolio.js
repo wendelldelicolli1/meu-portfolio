@@ -18,12 +18,28 @@ function posterFor(project) {
   return project.photos?.[0] || "";
 }
 
+// "Captação: Fulano · Edição: Beltrano" vira uma lista de créditos;
+// qualquer outro texto continua como descrição comum.
+function descriptionHtml(text) {
+  const value = String(text || "").trim();
+  if (!value) return "";
+  const label = /([A-ZÀ-Ý][a-zà-ÿ]+(?: [a-zà-ÿ]+){0,2}):\s*/g;
+  const marks = [...value.matchAll(label)];
+  if (marks.length && marks[0].index === 0) {
+    const credits = marks.map((mark, i) => {
+      const end = i + 1 < marks.length ? marks[i + 1].index : value.length;
+      const name = value.slice(mark.index + mark[0].length, end).replace(/[\s·•|,;/-]+$/, "").trim();
+      return name ? `<div><dt>${escapeHtml(mark[1])}</dt><dd>${escapeHtml(name)}</dd></div>` : "";
+    }).join("");
+    if (credits) return `<dl class="project-credits">${credits}</dl>`;
+  }
+  return `<p class="project-description">${escapeHtml(value)}</p>`;
+}
+
 function videoArticle(project, index) {
   const title = escapeHtml(project.title);
   const portrait = project.category === "vertical" ? " portrait" : "";
-  const description = project.description
-    ? `<p class="project-description">${escapeHtml(project.description)}</p>`
-    : "";
+  const description = descriptionHtml(project.description);
   return `
   <article class="project">
     <div class="project-media${portrait}">
@@ -32,7 +48,7 @@ function videoArticle(project, index) {
     </div>
     <div class="project-meta">
       <h2>${title}</h2><p class="project-year">${escapeHtml(project.year || "")}</p>
-      <p class="project-tag">${escapeHtml(project.client || "Vídeos")}</p>
+      ${project.client ? `<p class="project-tag">${escapeHtml(project.client)}</p>` : ""}
       ${description}
     </div>
   </article>`;
@@ -42,9 +58,7 @@ function photoArticle(project, index) {
   const title = escapeHtml(project.title);
   const photos = project.photos || [];
   const cover = posterFor(project);
-  const description = project.description
-    ? `<p class="project-description">${escapeHtml(project.description)}</p>`
-    : "";
+  const description = descriptionHtml(project.description);
   return `
   <article class="project photo-project" data-photos="${escapeHtml(JSON.stringify(photos))}" data-title="${title}">
     <button class="project-media photo-open" type="button" aria-label="Ver fotos de ${title}">
@@ -54,7 +68,7 @@ function photoArticle(project, index) {
     </button>
     <div class="project-meta">
       <h2>${title}</h2><p class="project-year">${escapeHtml(project.year || "")}</p>
-      <p class="project-tag">${escapeHtml(project.client || "Fotos")}</p>
+      ${project.client ? `<p class="project-tag">${escapeHtml(project.client)}</p>` : ""}
       ${description}
     </div>
   </article>`;
