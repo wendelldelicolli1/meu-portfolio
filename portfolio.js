@@ -31,7 +31,8 @@ function videoArticle(project, index) {
       <span>${String(index).padStart(2, "0")}</span>
     </div>
     <div class="project-meta">
-      <h2>${title}</h2><p>${escapeHtml(project.client || "Vídeos")}</p><p>${escapeHtml(project.year || "")}</p>
+      <h2>${title}</h2><p class="project-year">${escapeHtml(project.year || "")}</p>
+      <p class="project-tag">${escapeHtml(project.client || "Vídeos")}</p>
       ${description}
     </div>
   </article>`;
@@ -52,7 +53,8 @@ function photoArticle(project, index) {
       <i class="photo-count">${photos.length} ${photos.length === 1 ? "foto" : "fotos"}</i>
     </button>
     <div class="project-meta">
-      <h2>${title}</h2><p>${escapeHtml(project.client || "Fotos")}</p><p>${escapeHtml(project.year || "")}</p>
+      <h2>${title}</h2><p class="project-year">${escapeHtml(project.year || "")}</p>
+      <p class="project-tag">${escapeHtml(project.client || "Fotos")}</p>
       ${description}
     </div>
   </article>`;

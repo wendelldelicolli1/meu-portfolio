@@ -2,6 +2,13 @@
 
 .project-embed{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;z-index:2}
 
+/* Título, ano, legenda e descrição dos projetos */
+.project-meta{grid-template-columns:minmax(0,1fr) auto;align-items:baseline}
+.project-meta h2{grid-column:1;grid-row:1;line-height:1.05}
+.project-meta .project-year{grid-column:2;grid-row:1}
+.project-meta .project-tag,.project-meta p.project-tag:last-child{grid-column:1/-1;opacity:.6;line-height:1.6}
+.project-meta p:last-child.project-description,.project-meta .project-description{grid-column:1/-1;margin-top:6px;font-size:12px;letter-spacing:.01em;line-height:1.55;max-width:62ch}
+
 /* Projetos de foto */
 .photo-list .project{grid-column:span 4}
 .photo-list .project:nth-child(2n){margin-top:0}
