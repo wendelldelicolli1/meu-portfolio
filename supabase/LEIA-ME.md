@@ -40,3 +40,12 @@ Pronto: painel em **https://wldfilms.com.br/admin**.
 Rodar `supabase/avisos.sql` no SQL Editor. Depois, no painel → **Ajustes → Avisos de novo pedido**:
 preencher WhatsApp + chave do CallMeBot e/ou e-mail + chave do Resend (instruções na tela) e usar
 os botões de teste.
+
+## Problemas comuns
+- **"Não consegui falar com o Supabase (… Failed to fetch)"** ao entrar ou em "Esqueci minha senha":
+  o projeto está **pausado** (plano gratuito pausa por inatividade) ou o endereço em `assets/config.js`
+  não existe mais. No dashboard do Supabase, abra o projeto e use **Resume project** (o botão pode vir
+  traduzido como "Projeto de currículo"). Confira também se a URL do `config.js` é a mesma de
+  **Project Settings → API**.
+- **Pedidos de orçamento enquanto o banco está pausado se perdem** — o formulário não tem onde gravar.
+- Para usar o projeto "portfolio" como banco, veja `supabase/migrar-para-projeto-portfolio.sql`.
