@@ -151,6 +151,8 @@ async function boot() {
     auth: { persistSession: false, autoRefreshToken: true, detectSessionInUrl: true },
   });
   const recovering = /type=recovery/.test(location.hash);
+  const hashError = new URLSearchParams(location.hash.slice(1));
+  const linkError = hashError.get("error_code") || hashError.get("error");
 
   sb.auth.onAuthStateChange((event) => {
     if (event === "PASSWORD_RECOVERY") showReset();
@@ -163,7 +165,13 @@ async function boot() {
 
   const { data } = await sb.auth.getSession();
   if (data.session) enter(data.session);
-  else showLogin();
+  else {
+    showLogin();
+    if (linkError) {
+      history.replaceState(null, "", location.pathname);
+      authMessage("Esse link de recuperação expirou ou já foi usado. Digite seu e-mail e clique em “Esqueci minha senha” para receber outro.", true);
+    }
+  }
 }
 
 $("#login-form").addEventListener("submit", async (event) => {
@@ -193,8 +201,15 @@ $("#forgot").addEventListener("click", async () => {
     return;
   }
   const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}/admin` });
-  if (error) authMessage("Não consegui enviar o e-mail agora. Tente em alguns minutos.", true);
-  else authMessage("Se o e-mail estiver cadastrado, chega um link para criar uma nova senha.");
+  if (error) {
+    const code = error.code || error.status || "";
+    let hint = "Tente em alguns minutos.";
+    if (code === "over_email_send_rate_limit" || error.status === 429) hint = "Limite de envios atingido: aguarde cerca de 1 hora e tente de novo.";
+    else if (/redirect/i.test(error.message || "")) hint = "O endereço do painel não está autorizado no Supabase (Authentication → URL Configuration).";
+    else if (/failed to fetch|network/i.test(error.message || "")) hint = "Não consegui falar com o Supabase (projeto pausado ou sem internet?).";
+    else if (/smtp|sending|email/i.test(error.message || "")) hint = "O Supabase não conseguiu enviar o e-mail (configuração de e-mail/SMTP).";
+    authMessage(`Não consegui enviar o e-mail. ${hint} [${code || "erro"}: ${error.message || ""}]`, true);
+  } else authMessage("Se o e-mail estiver cadastrado, chega um link para criar uma nova senha.");
 });
 
 $("#reset-form").addEventListener("submit", async (event) => {
