@@ -48,5 +48,5 @@ os botões de teste.
   traduzido como "Projeto de currículo"). Confira também se a URL do `config.js` é a mesma de
   **Project Settings → API**.
 - **Pedidos de orçamento enquanto o banco está pausado se perdem** — o formulário não tem onde gravar.
-- **Conta errada:** o projeto do site se chama `wldfilms` (ref `groozsvduklsdrjjaoxu`) e fica na conta
-  Supabase do e-mail `wldfilmms@gmail.com`. Não rode o `schema.sql` em outros projetos.
+- **Conta errada:** o projeto do site se chama `wldfilms` (ref `groozsvduklsdrjjaoxu`) e fica na organização
+  `portfolio-wldfilms` do Supabase (confira com qual login você entra). Não rode o `schema.sql` em outros projetos.
