@@ -186,7 +186,13 @@ $("#login-form").addEventListener("submit", async (event) => {
   });
   button.disabled = false;
   if (error) {
-    authMessage("E-mail ou senha incorretos.", true);
+    const offline = error.status === 0 || /fetch|network|retryable/i.test(`${error.name} ${error.message}`);
+    authMessage(
+      offline
+        ? "Não consegui falar com o banco de dados (projeto do Supabase pausado ou endereço errado). Sua senha não foi testada."
+        : "E-mail ou senha incorretos.",
+      true
+    );
     return;
   }
   authMessage("");
